@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CRG3 DEM viewer</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            font: normal 14px/20px 'Source Sans Pro', 'Helvetica', sans-serif;
+        }
+
+        h1 {
+            line-height: 28px;
+        }
+
+        h1,
+        h2 {
+            margin: 10px 0;
+            font-weight: 200;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #map-ui {
+            background: rgba(0, 0, 0, .65);
+            width: 300px;
+            z-index: 50;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+        }
+
+#ck-button {
+    margin:4px;
+    background-color:#4e4e4e;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+	overflow:auto;
+    float: right;
+}
+
+
+#ck-button:hover {
+    background:#c9c9c9;
+}
+
+#ck-button label {
+    float:left;
+    width:20.0em;
+}
+
+#ck-button label span {
+    text-align:center;
+    padding:3px 0px;
+    display:block;
+}
+
+#ck-button label input {
+    position:absolute;
+    top:-40px;
+}
+
+#ck-button input:checked + span {
+    background-color:#959393;
+    color:#fff;
+}
+
+</style>
+
+
+
+</head>
+<body>
+	<div id='map-ui'>
+	<h1>Floodplain Topography</h1>
+	<div>
+	<div id="ck-button">
+		<label>
+			<input type="checkbox" value="be2014"><span>Bare Earth 2014</span>
+		</label>
+	</div>
+	<div id="ck-button">
+		<label>
+			<input type="checkbox" value="siteL"><span>Site L 2015</span>
+		</label>
+	</div>
+	<div id="ck-button">
+		<label>
+			<input type="checkbox" value="siteU"><span>Site U 2015</span>
+		</label>
+	</div>
+        </div>
+	</div>
+	<div id="map"></div>
+
+	<script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+	<script>
+
+		var map = L.map('map').setView([38.3, -121.4], 13);
+
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'mapbox.streets'
+		}).addTo(map);
+
+ var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', { type: 'sat', ext: 'jpg', attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency', subdomains: '1234' }).addTo(map);
+
+        var od_be_1m_2014 = 'test.png',
+        imageBounds = [[38.3226, -121.3984], [38.2809, -121.3626]];
+
+        var be2014 = L.imageOverlay(od_be_1m_2014, imageBounds);
+
+		be2014.addTo(map);
+		//var images = L.layerGroup([image1]);
+
+		// toggle functions
+		$( "input" ).click(function( event ) {
+			layerClicked = window[event.target.value];
+			console.log(layerClicked);
+				if (map.hasLayer(layerClicked)) {
+					console.log("CASE1");
+					map.removeLayer(layerClicked);
+				}
+				else{
+					console.log("CASE2");
+					map.addLayer(layerClicked);
+				} ;
+		});
+
+
+
+	</script>
+</body>
+</html>
