@@ -49,6 +49,16 @@
             padding: 10px;
         }
 
+		#map-legend {
+			background: rgba(0, 0, 0, .65);
+			width: 300px;
+			z-index: 50;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			padding: 10px;
+		}
+
 #ck-button {
     margin:4px;
     background-color:#4e4e4e;
@@ -60,7 +70,7 @@
 
 
 #ck-button:hover {
-    background:#c9c9c9;
+    background:#959393;
 }
 
 #ck-button label {
@@ -84,6 +94,12 @@
     color:#fff;
 }
 
+#legend {
+	text-align: center;
+	padding-top: 30px;
+}
+
+
 </style>
 
 
@@ -93,11 +109,7 @@
 	<div id='map-ui'>
 	<h1>Floodplain Topography</h1>
 	<div>
-	<div id="ck-button">
-		<label>
-			<input type="checkbox" value="be2014"><span>Bare Earth 2014</span>
-		</label>
-	</div>
+
 	<div id="ck-button">
 		<label>
 			<input type="checkbox" value="siteL"><span>Site L 2015</span>
@@ -108,8 +120,22 @@
 			<input type="checkbox" value="siteU"><span>Site U 2015</span>
 		</label>
 	</div>
-        </div>
+
+	<div id="ck-button">
+		<label>
+			<input type="checkbox" value="be2014"><span>Bare Earth 2014</span>
+		</label>
 	</div>
+
+
+
+
+</div>
+<div id="pad"><br></div>
+<div id="legend">
+	<img src="legend_sm.png"/>
+</div>
+</div>
 	<div id="map"></div>
 
 	<script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
@@ -117,36 +143,33 @@
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
 	<script>
 
-		var map = L.map('map').setView([38.3, -121.4], 13);
+		var map = L.map('map').setView([38.30175, -121.3805], 13);
 
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			id: 'mapbox.streets'
-		}).addTo(map);
 
- var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', { type: 'sat', ext: 'jpg', attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency', subdomains: '1234' }).addTo(map);
+ var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', { type: 'sat', ext: 'jpg', attribution: 'DEM - Center for Watershed Sciences UC Davis', subdomains: '1234' }).addTo(map);
 
-        var od_be_1m_2014 = 'test.png',
-        imageBounds = [[38.3226, -121.3984], [38.2809, -121.3626]];
-
-        var be2014 = L.imageOverlay(od_be_1m_2014, imageBounds);
+		// bare earth DEM
+        var be2014 = L.imageOverlay('be_1m_2014.png',  [[38.3226, -121.3984], [38.2809, -121.3626]]);
 
 		be2014.addTo(map);
-		//var images = L.layerGroup([image1]);
+
+		// site l
+
+        var siteL = L.imageOverlay('Site_L_2015.png', [[38.2947, -121.3837], [38.2930, -121.3798]]);
+		siteL.addTo(map);
+
+		// site U
+        var siteU = L.imageOverlay('Site_U_2015.png', [[38.3226, -121.3984], [38.2809, -121.3626]]);
+		siteU.addTo(map);
+
 
 		// toggle functions
 		$( "input" ).click(function( event ) {
 			layerClicked = window[event.target.value];
-			console.log(layerClicked);
 				if (map.hasLayer(layerClicked)) {
-					console.log("CASE1");
 					map.removeLayer(layerClicked);
 				}
 				else{
-					console.log("CASE2");
 					map.addLayer(layerClicked);
 				} ;
 		});
