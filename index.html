@@ -1,181 +1,214 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>CRG3 DEM viewer</title>
 	<meta charset="utf-8" />
-
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-
-<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 
 
-<style>
-        body {
-            margin: 0;
-            padding: 0;
-            color: #fff;
-            font: normal 14px/20px 'Source Sans Pro', 'Helvetica', sans-serif;
-        }
+	<link rel="stylesheet" href="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" />
 
-        h1 {
-            line-height: 28px;
-        }
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-        h1,
-        h2 {
-            margin: 10px 0;
-            font-weight: 200;
-        }
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            z-index: 1;
-        }
 
-        #map-ui {
-            background: rgba(0, 0, 0, .65);
-            width: 300px;
-            z-index: 50;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-        }
 
-		#map-legend {
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			color: #fff;
+			font: normal 14px/20px 'Source Sans Pro', 'Helvetica', sans-serif;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
+			z-index: 1;
+		}
+
+		#map-ui {
 			background: rgba(0, 0, 0, .65);
 			width: 300px;
 			z-index: 50;
 			position: absolute;
-			bottom: 10px;
+			top: 10px;
 			right: 10px;
 			padding: 10px;
 		}
 
-#ck-button {
-    margin:4px;
-    background-color:#4e4e4e;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
-	overflow:auto;
-    float: right;
-}
+		#legend {
+			text-align: center;
+			padding-top: 10px;
+		}
 
+		span.glyphicon {
+			font-size: 1.2em;
+			padding-left: 20px;
+			padding-right: 10px;
+		}
 
-#ck-button:hover {
-    background:#959393;
-}
+		.layer label input {
+			position: absolute;
+			top: -40px;
+		}
 
-#ck-button label {
-    float:left;
-    width:20.0em;
-}
+		input[type='checkbox'].icon-checkbox {
+			display: none
+		}
 
-#ck-button label span {
-    text-align:center;
-    padding:3px 0px;
-    display:block;
-}
+		input[type='checkbox'].icon-checkbox+label .unchecked {
+			display: inline
+		}
 
-#ck-button label input {
-    position:absolute;
-    top:-40px;
-}
+		input[type='checkbox'].icon-checkbox+label .checked {
+			display: none
+		}
 
-#ck-button input:checked + span {
-    background-color:#959393;
-    color:#fff;
-}
+		input[type='checkbox']:checked.icon-checkbox {
+			display: none
+		}
 
-#legend {
-	text-align: center;
-	padding-top: 30px;
-}
+		input[type='checkbox']:checked.icon-checkbox+label .unchecked {
+			display: none
+		}
 
+		input[type='checkbox']:checked.icon-checkbox+label .checked {
+			display: inline
+		}
 
-</style>
+		.mapnavigation {
+			display: inline;
+		}
+
+		button {
+			-webkit-appearance: none;
+			outline: none;
+			border: 0;
+			background: transparent;
+		}
+	</style>
 
 
 
 </head>
+
 <body>
 	<div id='map-ui'>
-	<h1>Floodplain Topography</h1>
-	<div>
+		<h3>Floodplain Topography</h3>
 
-	<div id="ck-button">
-		<label>
-			<input type="checkbox" value="siteL"><span>Site L 2015</span>
-		</label>
+		<div id="checkboxes">
+			<input id="checkbox1" class="icon-checkbox" type="checkbox" value="siteL" />
+			<label for="checkbox1">
+				<span class='glyphicon glyphicon-eye-open unchecked'></span>
+				<span class='glyphicon glyphicon-eye-close checked'></span> Site L 2015
+			</label>
+			<div class="mapnavigation">
+				<button class="zoom" data-zoom="18" data-position="38.29385,-121.38175"><span class="glyphicon glyphicon-zoom-in"></span></button>
+			</div>
+
+			<input id="checkbox2" class="icon-checkbox" type="checkbox" value="siteU" />
+			<label for="checkbox2">
+				<span class='glyphicon glyphicon-eye-open unchecked'></span>
+				<span class='glyphicon glyphicon-eye-close checked'></span> Site U 2015
+			</label>
+			<div class="mapnavigation">
+				<button class="zoom" data-zoom="18" data-position="38.30175,-121.3805"><span class="glyphicon glyphicon-zoom-in"></span></button>
+			</div>
+
+			<input id="checkbox3" class="icon-checkbox" type="checkbox" value="be2014" />
+			<label for="checkbox3">
+				<span class='glyphicon glyphicon-eye-open unchecked'></span>
+				<span class='glyphicon glyphicon-eye-close checked'></span> Bare Earth 2014
+			</label>
+			<div class="mapnavigation">
+				<button class="zoom" data-zoom="14" data-position="38.30175,-121.3805"><span class="glyphicon glyphicon-zoom-in"></span></button>
+			</div>
+		</div>
+
+		<div id="pad">
+			<br>
+		</div>
+		<div id="legend">
+			<img src="legend_sm.png" />
+		</div>
 	</div>
-	<div id="ck-button">
-		<label>
-			<input type="checkbox" value="siteU"><span>Site U 2015</span>
-		</label>
-	</div>
-
-	<div id="ck-button">
-		<label>
-			<input type="checkbox" value="be2014"><span>Bare Earth 2014</span>
-		</label>
-	</div>
-
-
-
-
-</div>
-<div id="pad"><br></div>
-<div id="legend">
-	<img src="legend_sm.png"/>
-</div>
-</div>
 	<div id="map"></div>
 
-	<script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
-	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
-	<script>
+	<!-- Javascript -->
 
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+
+	<script src="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<script>
 		var map = L.map('map').setView([38.30175, -121.3805], 13);
 
-
- var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', { type: 'sat', ext: 'jpg', attribution: 'DEM - Center for Watershed Sciences UC Davis', subdomains: '1234' }).addTo(map);
+		var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+			type: 'sat',
+			ext: 'jpg',
+			attribution: 'DEM - Center for Watershed Sciences UC Davis',
+			subdomains: '1234'
+		}).addTo(map);
 
 		// bare earth DEM
-        var be2014 = L.imageOverlay('be_1m_2014.png',  [[38.3226, -121.3984], [38.2809, -121.3626]]);
-
+		var be2014 = L.imageOverlay('be_1m_2014.png', [
+			[38.3226, -121.3984],
+			[38.2809, -121.3626]
+		]);
 		be2014.addTo(map);
 
 		// site l
-
-        var siteL = L.imageOverlay('Site_L_2015.png', [[38.2947, -121.3837], [38.2930, -121.3798]]);
+		var siteL = L.imageOverlay('Site_L_2015.png', [
+			[38.2947, -121.3837],
+			[38.2930, -121.3798]
+		]);
 		siteL.addTo(map);
 
 		// site U
-        var siteU = L.imageOverlay('Site_U_2015.png', [[38.3226, -121.3984], [38.2809, -121.3626]]);
+		var siteU = L.imageOverlay('Site_U_2015.png', [
+			[38.3226, -121.3984],
+			[38.2809, -121.3626]
+		]);
 		siteU.addTo(map);
 
-
-		// toggle functions
-		$( "input" ).click(function( event ) {
+		// add or remove layers from checkbox input
+		$("#checkboxes").click(function(event) {
 			layerClicked = window[event.target.value];
-				if (map.hasLayer(layerClicked)) {
-					map.removeLayer(layerClicked);
-				}
-				else{
-					map.addLayer(layerClicked);
-				} ;
+			if (map.hasLayer(layerClicked)) {
+				map.removeLayer(layerClicked);
+			} else {
+				map.addLayer(layerClicked);
+			};
 		});
 
-
-
+		// zoom to area
+		$(".zoom").click(function(event) {
+			console.log(event);
+			var pos = event.target.getAttribute('data-position');
+			var zoom = event.target.getAttribute('data-zoom');
+			console.log(pos, zoom);
+			if (pos && zoom) {
+				var locat = pos.split(',');
+				var zoo = parseInt(zoom);
+				map.setView(locat, zoo, {
+					animation: true
+				});
+				return false;
+			}
+		});
 	</script>
 </body>
+
 </html>
