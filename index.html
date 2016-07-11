@@ -87,14 +87,9 @@
 
 		.mapnavigation {
 			display: inline;
+			float: right;
 		}
 
-		button {
-			-webkit-appearance: none;
-			outline: none;
-			border: 0;
-			background: transparent;
-		}
 	</style>
 
 
@@ -112,8 +107,9 @@
 				<span class='glyphicon glyphicon-eye-close checked'></span> Site L 2015
 			</label>
 			<div class="mapnavigation">
-				<button class="zoom" data-zoom="18" data-position="38.29385,-121.38175"><span class="glyphicon glyphicon-zoom-in"></span></button>
+				<span class="glyphicon glyphicon-zoom-in" data-zoom="18" data-position="38.29385,-121.38175"></span>
 			</div>
+
 
 			<input id="checkbox2" class="icon-checkbox" type="checkbox" value="siteU" />
 			<label for="checkbox2">
@@ -121,7 +117,7 @@
 				<span class='glyphicon glyphicon-eye-close checked'></span> Site U 2015
 			</label>
 			<div class="mapnavigation">
-				<button class="zoom" data-zoom="18" data-position="38.30175,-121.3805"><span class="glyphicon glyphicon-zoom-in"></span></button>
+				<span class="glyphicon glyphicon-zoom-in" data-zoom="18" data-position="38.30175,-121.3805"></span>
 			</div>
 
 			<input id="checkbox3" class="icon-checkbox" type="checkbox" value="be2014" />
@@ -130,13 +126,10 @@
 				<span class='glyphicon glyphicon-eye-close checked'></span> Bare Earth 2014
 			</label>
 			<div class="mapnavigation">
-				<button class="zoom" data-zoom="14" data-position="38.30175,-121.3805"><span class="glyphicon glyphicon-zoom-in"></span></button>
+				<span class="glyphicon glyphicon-zoom-in" data-zoom="14" data-position="38.30175,-121.3805"></span>
 			</div>
 		</div>
 
-		<div id="pad">
-			<br>
-		</div>
 		<div id="legend">
 			<img src="legend_sm.png" />
 		</div>
@@ -184,7 +177,7 @@
 		siteU.addTo(map);
 
 		// add or remove layers from checkbox input
-		$("#checkboxes").click(function(event) {
+		$(".icon-checkbox").click(function(event) {
 			layerClicked = window[event.target.value];
 			if (map.hasLayer(layerClicked)) {
 				map.removeLayer(layerClicked);
@@ -194,7 +187,7 @@
 		});
 
 		// zoom to area
-		$(".zoom").click(function(event) {
+		$(".mapnavigation").click(function(event) {
 			console.log(event);
 			var pos = event.target.getAttribute('data-position');
 			var zoom = event.target.getAttribute('data-zoom');
